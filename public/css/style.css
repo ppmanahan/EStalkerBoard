@@ -1,0 +1,10 @@
+/**Override Bootstrap*/
+html, body{
+	background-attachment:fixed;
+	background-repeat:no-repeat;
+	background-position:bottom left;
+	height: 100%;
+}
+#logincon {
+	padding-top: 45px;
+}

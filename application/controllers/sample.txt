@@ -1,0 +1,17 @@
+url: "<?=base_url()?>index/login",
+		type: "POST",
+		data: {
+			username: $("#username").val(),
+			password: $("#password").val(),
+		}, 
+		success:function(data){
+			if(data == "1"){
+				alert("valid");
+			}
+			else if(data == "-1"){
+				alert("invalid")
+			}
+			else{
+				alert(data);
+			}
+		}
