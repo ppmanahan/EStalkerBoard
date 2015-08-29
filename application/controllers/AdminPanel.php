@@ -43,6 +43,19 @@ class AdminPanel extends CI_Controller{
 			
 	}
 
+	function subjects(){
+		$data['title'] = "E-Stalker Board - Subject";
+		$this->load->view('inc/header_view', $data);
+			
+			$data['main'] = site_url('adminPanel/main');
+			$this->load->view('inc/navbar', $data);
+
+			$this->load->view('subject');
+
+			$this->load->view('inc/footer_view');
+			
+	}
+
 
 	function selectBuilding(){	
 		//$this->isAuthorized();

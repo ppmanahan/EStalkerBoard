@@ -211,27 +211,27 @@
         <div class="list-wrap">
 
           <div class="subject-container" data-name="ES 11">
-            <a href=""><small>ES 11</small></a>
+            <a href="<?php echo site_url('adminPanel/subjects/1') ?>"><small>ES 11</small></a>
             <hr>
           </div>
           
           <div class="subject-container" data-name="CS 133">
-            <a href=""><small>CS 133</small></a>
+            <a href="<?php echo site_url('adminPanel/subjects/2') ?>"><small>CS 133</small></a>
             <hr>
           </div>
           
           <div class="subject-container" data-name="Physics 72">
-            <a href=""><small>Physics 72</small></a>
+            <a href="<?php echo site_url('adminPanel/subjects/3') ?>"><small>Physics 72</small></a>
             <hr>
           </div>
           
           <div class="subject-container" data-name="Math 54">
-            <a href=""><small>Math 54</small></a>
+            <a href="<?php echo site_url('adminPanel/subjects/4') ?>"><small>Math 54</small></a>
             <hr>
           </div>
 
           <div class="subject-container" data-name="CE 22">
-            <a href=""><small>CE 22</small></a>
+            <a href="<?php echo site_url('adminPanel/subjects/5') ?>"><small>CE 22</small></a>
             <hr>
           </div>
          
