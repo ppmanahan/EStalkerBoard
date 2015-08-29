@@ -110,24 +110,42 @@
           </div>  
         </div><!-- col-xs-6 -->
       
-        <div class="col-xs-6">
-          <div class="form-group"> 
-            <p><small>Time</small></p>
-            <div class="col-xs-3">              
-            <select class="form-control select select-info select-sm" data-toggle="select" id="time" name="time">
-              <option value="">Select Time</option>
-              <option value="1">7:00 - 8:30 am</option>
-              <option value="2">8:30 - 10:00 am</option>
-              <option value="3">10:00 - 11:30 am</option>
-              <option value="4">11:30 - 1:00 pm</option>
-              <option value="5">1:00 - 2:30 pm</option>
-              <option value="6">2:30 - 4:00 pm</option>
-              <option value="7">4:00 - 5:30 pm</option>
-              <option value="8">5:30 - 7:00 pm</option>
-            </select>
+        
+          <div class="col-xs-3">
+            <div class="form-group"> 
+              <p><small>Start Time</small></p>              
+              <select class="form-control select select-info select-sm" data-toggle="select" id="start-time" name="start-time">
+                <option value="">Select Time</option>
+                <option value="1">7:00 am</option>
+                <option value="2">8:30 am</option>
+                <option value="3">10:00 am</option>
+                <option value="4">11:30 pm</option>
+                <option value="5">1:00 pm</option>
+                <option value="6">2:30 pm</option>
+                <option value="7">4:00 pm</option>
+                <option value="8">5:30 pm</option>
+                <option value="9">7:00 pm</option>
+              </select>
             </div>
-          </div>
-        </div><!-- col-xs-6 -->
+          </div><!-- col-xs-6 -->
+          <div class="col-xs-3">
+            <div class="form-group"> 
+              <p><small>End Time</small></p>             
+              <select class="form-control select select-info select-sm" data-toggle="select" id="end-time" name="end-time">
+                <option value="">Select Time</option>
+                <option value="1">7:00 am</option>
+                <option value="2">8:30 am</option>
+                <option value="3">10:00 am</option>
+                <option value="4">11:30 pm</option>
+                <option value="5">1:00 pm</option>
+                <option value="6">2:30 pm</option>
+                <option value="7">4:00 pm</option>
+                <option value="8">5:30 pm</option>
+                <option value="9">7:00 pm</option>
+              </select>
+            </div>
+          </div><!-- col-xs-6 -->
+
       </div>  
       <div class="row">
         <div class="col-xs-offset-5">
@@ -269,36 +287,53 @@
     $('#schedule-image').attr('src', '<?=base_url()?>public/img/icons/png/sched.png');
   });
 
-  var time_input = false;
-  var day_input = false;
+  var starttime = false;
+  var endtime = false;
+  var day = false;
 
   $('input[type=checkbox]').change(function () {
     checked = $("input[type=checkbox]:checked").length;
     if (checked > 0) {
-      day_input = true;
+      day = true;
      }
      else {
       $('#search-sched').attr("disabled", 'disabled');
-      day_input = false;
+      day = false;
      }
 
-    if(time_input==true && day_input==true)
+    if(starttime==true && endtime==true && day==true)
     {
       $('#search-sched').removeAttr('disabled');
     }
   });
 
-  $("#time").change(function() {
-    var time_select = $("#time option:selected").val();
-    if(time_select > 0){
-      time_input = true;
+  $("#start-time").change(function() {
+    var starttime_select = $("#start-time option:selected").val();
+    if(starttime_select > 0){
+      starttime = true;
     }
     else {
       $('#search-sched').attr("disabled", 'disabled');
-      time_input = false;
+      starttime = false;
     }
 
-    if(time_input==true && day_input==true)
+    if(starttime==true && endtime==true && day==true)
+    {
+      $('#search-sched').removeAttr('disabled');
+    }
+  });
+
+  $("#end-time").change(function() {
+    var endtime_select = $("#end-time option:selected").val();
+    if(endtime_select > 0){
+      endtime = true;
+    }
+    else {
+      $('#search-sched').attr("disabled", 'disabled');
+      endtime = false;
+    }
+
+    if(starttime==true && endtime==true && day==true)
     {
       $('#search-sched').removeAttr('disabled');
     }
@@ -362,5 +397,31 @@
   
 
 
+
 </script>
 
+<script>
+$('#tabPanel a').click(function (e) {
+        e.preventDefault();
+        $(this).tab('show');
+    });
+
+    // store the currently selected tab in the hash value
+    $("ul.nav-tabs > li > a").on("shown.bs.tab", function (e) {
+        var id = $(e.target).attr("href").substr(1);
+        window.location.hash = id;
+    });
+
+    // on load of the page: switch to the currently selected tab
+    var hash = window.location.hash;
+  if(hash) {
+    $('#tabPanel a[href="' + hash + '"]').tab('show');
+  }
+  else{
+     $('#tabPanel a[data-toggle="tab"]:first').tab('show');
+        }
+
+function toggler(divId) {
+    $("#" + divId).toggle();
+}
+</script>
