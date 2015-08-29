@@ -40,27 +40,27 @@
         <div class="list-wrap">
 
           <div class="name-container" data-name="Jolinarose R. Gaspar">
-            <a href=""><small>Jolinarose R. Gaspar</small></a>
+            <a href="<?php echo site_url('adminPanel/students/1') ?>"><small>Jolinarose R. Gaspar</small></a>
             <hr>
           </div>
           
           <div class="name-container" data-name="Patricia P. Manahan">
-            <a href=""><small>Patricia P. Manahan</small></a>
+            <a href="<?php echo site_url('adminPanel/students/2') ?>"><small>Patricia P. Manahan</small></a>
             <hr>
           </div>
           
           <div class="name-container" data-name="Taylor Swift">
-            <a href=""><small>Taylor Swift</small></a>
+            <a href="<?php echo site_url('adminPanel/students/3') ?>"><small>Taylor Swift</small></a>
             <hr>
           </div>
           
           <div class="name-container" data-name="Sam Smith">
-            <a href=""><small>Sam Smith</small></a>
+            <a href="<?php echo site_url('adminPanel/students/4') ?>"><small>Sam Smith</small></a>
             <hr>
           </div>
 
           <div class="name-container" data-name="Taylor Austria">
-            <a href=""><small>Taylor Austria</small></a>
+            <a href="<?php echo site_url('adminPanel/students/5') ?>"><small>Taylor Austria</small></a>
             <hr>
           </div>
          
@@ -110,7 +110,6 @@
           </div>  
         </div><!-- col-xs-6 -->
       
-        
           <div class="col-xs-3">
             <div class="form-group"> 
               <p><small>Start Time</small></p>              
@@ -145,7 +144,6 @@
               </select>
             </div>
           </div><!-- col-xs-6 -->
-
       </div>  
       <div class="row">
         <div class="col-xs-offset-5">
@@ -241,10 +239,6 @@
       </div>
     </div>
     
-        
-       
-        
-      
   </div><!--tab container-->
   </div> <!--tab pane-->
 

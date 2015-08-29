@@ -12,26 +12,15 @@ class AdminPanel extends CI_Controller{
         $this->load->model('users_model');
     }
 
-    function isAuthorized(){
-		if($_SESSION['userType'] == "user"){
-    		redirect('/userPanel/main');
-    	}
-    	else if($_SESSION['userType'] != "admin"){
-    		redirect('/index/view');
-    	}
-    }
-
 	function main(){		
 		//$this->isAuthorized();
 		//$url = site_url('adminPanel/main');
 		//$url = base_url();
 		unset($_SESSION['targetID']);
 
-		$userID = $this->session->userID;
 		$data['title'] = "E-Stalker Board";
 		$this->load->view('inc/header_view', $data);
 		
-		$data['username'] = $this->session->username;
 		$data['main'] = site_url('adminPanel/main');
 		$this->load->view('inc/navbar', $data);
 
@@ -40,6 +29,20 @@ class AdminPanel extends CI_Controller{
 
 		$this->load->view('inc/footer_view');
 	}
+
+	function students(){
+		$data['title'] = "E-Stalker Board - Student";
+		$this->load->view('inc/header_view', $data);
+			
+			$data['main'] = site_url('adminPanel/main');
+			$this->load->view('inc/navbar', $data);
+
+			$this->load->view('student');
+
+			$this->load->view('inc/footer_view');
+			
+	}
+
 
 	function selectBuilding(){	
 		//$this->isAuthorized();
@@ -585,6 +588,7 @@ class AdminPanel extends CI_Controller{
 		echo "<script>alert('Email changed successfully'); window.location = '$url'</script>";
 		
 	}
+
 
 	function changePassword(){
 		$this->isAuthorized();
