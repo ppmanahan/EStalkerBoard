@@ -80,7 +80,7 @@
       echo form_open('adminPanel/statistics', $attributes);
     ?>
       <div class="row">
-        <div class="col-xs-6">
+        <div class="col-xs-5">
           <div class="form-group">
           <p><small>Date</small></p>                
             <label class="checkbox checkbox-inline" for="mon">
@@ -127,6 +127,7 @@
               </select>
             </div>
           </div><!-- col-xs-6 -->
+          <div class="col-xs-1"></div>
           <div class="col-xs-3">
             <div class="form-group"> 
               <p><small>End Time</small></p>             

@@ -28,10 +28,10 @@
 <style type = "text/css">
 
 html, body{
-    background-image: url('<?=base_url()?>public/img/oble.png');
+    background-image: url('<?=base_url()?>public/img/es.png');
     background-attachment:fixed;
     background-repeat:no-repeat;
-    background-position:bottom left;
+    background-position:center;
     height: 100%;
 }
 
