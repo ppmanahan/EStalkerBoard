@@ -3,26 +3,18 @@
   <div class="row">
   <div class="main-wrap">
     <div class="page-header">
-        <h5>ES 11</h5>
+        <h5><?php echo $subject['name'] ?></h5>
     </div><br>
-     <small>Total number of members taking this subject: </small><span><b>12</b></span>
+     <small>Total number of members taking this subject: </small><span><b><?php echo $totalEnrolled ?></b></span>
      <div class="list-wrap">
-        <div class="subject-container" data-name="ES 11">
-          <small>Taylor Swift</small></a>
-          <hr>
-        </div>
-        <div class="subject-container" data-name="ES 11">
-          <small>Megan Young</small></a>
-          <hr>
-        </div>
-        <div class="subject-container" data-name="ES 11">
-          <small>Ed Sheeran</small></a>
-          <hr>
-        </div>
-        <div class="subject-container" data-name="ES 11">
-          <small>Sam Smith</small></a>
-          <hr>
-        </div>
+
+        <?php foreach ($enrolledStudents as $enrolledStudent): ?>       
+          <div class='subject-container'>
+            <small><?php echo $enrolledStudent['name'] ?></small></a>
+            <hr>
+          </div>
+        <?php endforeach ?>
+        
      </div>
   </div>
 

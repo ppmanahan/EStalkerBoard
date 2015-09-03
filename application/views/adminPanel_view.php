@@ -39,31 +39,13 @@
 
         <div class="list-wrap">
 
-          <div class="name-container" data-name="Jolinarose R. Gaspar">
-            <a href="<?php echo site_url('adminPanel/students/1') ?>"><small>Jolinarose R. Gaspar</small></a>
-            <hr>
-          </div>
-          
-          <div class="name-container" data-name="Patricia P. Manahan">
-            <a href="<?php echo site_url('adminPanel/students/2') ?>"><small>Patricia P. Manahan</small></a>
-            <hr>
-          </div>
-          
-          <div class="name-container" data-name="Taylor Swift">
-            <a href="<?php echo site_url('adminPanel/students/3') ?>"><small>Taylor Swift</small></a>
-            <hr>
-          </div>
-          
-          <div class="name-container" data-name="Sam Smith">
-            <a href="<?php echo site_url('adminPanel/students/4') ?>"><small>Sam Smith</small></a>
-            <hr>
-          </div>
+          <?php foreach ($studentList as $student): ?>        
+            <?php echo "<div class='name-container' data-name='" . $student['name'] . "'>" ?>
+            <?php echo "<a href='" . site_url('adminPanel/students/' . $student['student_number']) . "'><small>" . $student['name'] . "</small></a>" ?>
+            <?php echo "<hr>" ?>
+            <?php echo "</div>" ?>
+          <?php endforeach ?>
 
-          <div class="name-container" data-name="Taylor Austria">
-            <a href="<?php echo site_url('adminPanel/students/5') ?>"><small>Taylor Austria</small></a>
-            <hr>
-          </div>
-         
         </div>
       </div>
     </div>
@@ -211,30 +193,12 @@
 
         <div class="list-wrap">
 
-          <div class="subject-container" data-name="ES 11">
-            <a href="<?php echo site_url('adminPanel/subjects/1') ?>"><small>ES 11</small></a>
+          <?php foreach ($subjectList as $subject): ?>       
+            <?php echo "<div class='subject-container' data-name='" . $subject['name'] . "'>" ?>
+            <?php echo "<a href='" . site_url('adminPanel/subjects/' . $subject['class_code']) . "'><small>" . $subject['name'] . "</small></a>" ?>
             <hr>
-          </div>
-          
-          <div class="subject-container" data-name="CS 133">
-            <a href="<?php echo site_url('adminPanel/subjects/2') ?>"><small>CS 133</small></a>
-            <hr>
-          </div>
-          
-          <div class="subject-container" data-name="Physics 72">
-            <a href="<?php echo site_url('adminPanel/subjects/3') ?>"><small>Physics 72</small></a>
-            <hr>
-          </div>
-          
-          <div class="subject-container" data-name="Math 54">
-            <a href="<?php echo site_url('adminPanel/subjects/4') ?>"><small>Math 54</small></a>
-            <hr>
-          </div>
-
-          <div class="subject-container" data-name="CE 22">
-            <a href="<?php echo site_url('adminPanel/subjects/5') ?>"><small>CE 22</small></a>
-            <hr>
-          </div>
+            </div>
+          <?php endforeach ?>
          
         </div>
       </div>

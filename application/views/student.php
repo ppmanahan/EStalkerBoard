@@ -3,8 +3,8 @@
   <div class="row">
   <div class="main-wrap">
     <div class="page-header">
-        <h5>Jolinarose R. Gaspar</h5>
-        <p>2012-21099</p>
+        <h5><?php echo $student['name'] ?></h5>
+        <p><?php echo $student['student_number'] ?></p>
      </div>
      <small>Schedule</small>
      <table class="table table-bordered table-hover table-condensed">

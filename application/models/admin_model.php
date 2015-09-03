@@ -1,15 +1,51 @@
 <?php
 class Admin_Model extends CI_Model{
-	function hasDuplicate($tableName, $args, $colName){
-		$query = $this->db->get_where($tableName, $args);
-		$result = $query->result_array();	
-		foreach ($result as $row) {			
-		 	if($args[$colName] == $row[$colName]){
-		 		return true;	
-		 	}
-		 } 
-		return false;
-	} 
+
+	function allStudents() {
+		$this->db->order_by('name', 'asc');
+		$query = $this->db->get('students');
+		return $query->result_array();
+	}
+
+	function allSubjects() {
+		$this->db->order_by('name', 'asc');
+		$query = $this->db->get('classes');
+		return $query->result_array();
+	}
+
+	function studentInfo($student_number) {
+		
+		$query = $this->db->get_where('students', array('student_number' => $student_number));
+		$result =  $query->result_array();
+		foreach ($result as $row) {
+			return $row;
+		}
+	}
+
+	function subjectInfo($class_code) {
+		
+		$query = $this->db->get_where('classes', array('class_code' => $class_code));
+		$result =  $query->result_array();
+		foreach ($result as $row) {
+			return $row;
+		}
+	}
+
+	function studentsEnrolled($class_code) {
+		$this->db->select('students.name');
+		$this->db->join('students', 'students.student_number = schedule.student_number');
+		$query = $this->db->get_where('schedule', array('class_code' => $class_code));
+
+		return $query->result_array();
+	}
+
+	function totalEnrolled($class_code) {
+		$this->db->select('students.name');
+		$this->db->join('students', 'students.student_number = schedule.student_number');
+		$query = $this->db->get_where('schedule', array('class_code' => $class_code));
+
+		return $query->num_rows();
+	}
 
 	function getUserID($buildingName){
 		$this->db->select('userID');
