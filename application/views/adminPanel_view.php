@@ -59,34 +59,34 @@
     </div><!-- page-header -->   
     <?php 
       $attributes = array('role' => 'form');
-      echo form_open('adminPanel/statistics', $attributes);
+      echo form_open();
     ?>
       <div class="row">
         <div class="col-xs-5">
           <div class="form-group">
           <p><small>Date</small></p>                
             <label class="checkbox checkbox-inline" for="mon">
-              <input type="checkbox" data-toggle="checkbox" value="" id="mon">
+              <input type="checkbox" data-toggle="checkbox" value="M" id="mon" name="day[]">
                 M
             </label>
             <label class="checkbox checkbox-inline" for="tues">
-              <input type="checkbox" data-toggle="checkbox" value="" id="tues">
+              <input type="checkbox" data-toggle="checkbox" value="T" id="tues" name="day[]">
                 T
             </label>
             <label class="checkbox checkbox-inline" for="wed">
-              <input type="checkbox" data-toggle="checkbox" value="" id="wed">
+              <input type="checkbox" data-toggle="checkbox" value="W" id="wed" name="day[]">
                 W
             </label>
             <label class="checkbox checkbox-inline" for="thurs">
-              <input type="checkbox" data-toggle="checkbox" value="" id="thurs">
+              <input type="checkbox" data-toggle="checkbox" value="Th" id="thurs" name="day[]">
                 Th
             </label>
             <label class="checkbox checkbox-inline" for="fri">
-              <input type="checkbox" data-toggle="checkbox" value="" id="fri">
+              <input type="checkbox" data-toggle="checkbox" value="F" id="fri" name="day[]">
                 F
             </label>
             <label class="checkbox checkbox-inline" for="sat">
-              <input type="checkbox" data-toggle="checkbox" value="" id="sat">
+              <input type="checkbox" data-toggle="checkbox" value="S" id="sat" name="day[]">
                 S
             </label>
           </div>  
@@ -97,15 +97,15 @@
               <p><small>Start Time</small></p>              
               <select class="form-control select select-info select-sm" data-toggle="select" id="start-time" name="start-time">
                 <option value="">Select Time</option>
-                <option value="1">7:00 am</option>
-                <option value="2">8:30 am</option>
-                <option value="3">10:00 am</option>
-                <option value="4">11:30 pm</option>
-                <option value="5">1:00 pm</option>
-                <option value="6">2:30 pm</option>
-                <option value="7">4:00 pm</option>
-                <option value="8">5:30 pm</option>
-                <option value="9">7:00 pm</option>
+                <option value="700">7:00 am</option>
+                <option value="830">8:30 am</option>
+                <option value="1000">10:00 am</option>
+                <option value="1130">11:30 pm</option>
+                <option value="1300">1:00 pm</option>
+                <option value="1430">2:30 pm</option>
+                <option value="1600">4:00 pm</option>
+                <option value="1730">5:30 pm</option>
+                <option value="1900">7:00 pm</option>
               </select>
             </div>
           </div><!-- col-xs-6 -->
@@ -115,15 +115,15 @@
               <p><small>End Time</small></p>             
               <select class="form-control select select-info select-sm" data-toggle="select" id="end-time" name="end-time">
                 <option value="">Select Time</option>
-                <option value="1">7:00 am</option>
-                <option value="2">8:30 am</option>
-                <option value="3">10:00 am</option>
-                <option value="4">11:30 pm</option>
-                <option value="5">1:00 pm</option>
-                <option value="6">2:30 pm</option>
-                <option value="7">4:00 pm</option>
-                <option value="8">5:30 pm</option>
-                <option value="9">7:00 pm</option>
+                <option value="700">7:00 am</option>
+                <option value="830">8:30 am</option>
+                <option value="1000">10:00 am</option>
+                <option value="1130">11:30 pm</option>
+                <option value="1300">1:00 pm</option>
+                <option value="1430">2:30 pm</option>
+                <option value="1600">4:00 pm</option>
+                <option value="1730">5:30 pm</option>
+                <option value="1900">7:00 pm</option>
               </select>
             </div>
           </div><!-- col-xs-6 -->
@@ -137,33 +137,7 @@
     <div class="row">
       <div class="col-xs-12">
         <hr style="height:1px; color:#999999; background-color:#999999;"><div id="count" class="count" data-value="{{{ $count }}}" style="display:inline;"><b>43</b></div><span><small> people</small></span>
-
-        <div class="result-wrap">
-          <div class>
-            <span style="display:inline-block"><small>Jolinarose R. Gaspar</small></span> 
-            <span style="float: right;"><small>TTh 1 - 2:30</small></span>
-          </div>
-          <div>
-            <small>09276824582</small>
-          </div>
-          <hr>
-
-          <div class>
-            <span style="display:inline-block"><small>Patricia P. Manahan</small></span> 
-            <span style="float: right;"><small>WF 2:30 - 4</small></span>
-          </div>
-          <div>
-            <small>09276824582</small>
-          </div>
-          <hr>
-          <div class>
-            <span style="display:inline-block"><small>Taylor Swift</small></span> 
-            <span style="float: right;"><small>TTh 1 - 2:30</small></span>
-          </div>
-          <div>
-            <small>09276824582</small>
-          </div>
-          <hr>
+        <div class="result-wrap" id="result-wrap">
         </div>
       </div>
     </div> 
@@ -246,8 +220,8 @@
     $('#schedule-image').attr('src', '<?=base_url()?>public/img/icons/png/sched.png');
   });
 
-  var starttime = false;
-  var endtime = false;
+  var starttime = 0;
+  var endtime = 0;
   var day = false;
 
   $('input[type=checkbox]').change(function () {
@@ -260,7 +234,7 @@
       day = false;
      }
 
-    if(starttime==true && endtime==true && day==true)
+    if(starttime>0 && endtime>0 && day==true && starttime<endtime)
     {
       $('#search-sched').removeAttr('disabled');
     }
@@ -269,14 +243,14 @@
   $("#start-time").change(function() {
     var starttime_select = $("#start-time option:selected").val();
     if(starttime_select > 0){
-      starttime = true;
+      starttime = Number(starttime_select);
     }
     else {
       $('#search-sched').attr("disabled", 'disabled');
-      starttime = false;
+      starttime = 0;
     }
 
-    if(starttime==true && endtime==true && day==true)
+    if(starttime>0 && endtime>0 && day==true && starttime<endtime)
     {
       $('#search-sched').removeAttr('disabled');
     }
@@ -285,14 +259,14 @@
   $("#end-time").change(function() {
     var endtime_select = $("#end-time option:selected").val();
     if(endtime_select > 0){
-      endtime = true;
+      endtime = Number(endtime_select);
     }
     else {
       $('#search-sched').attr("disabled", 'disabled');
-      endtime = false;
+      endtime = 0;
     }
 
-    if(starttime==true && endtime==true && day==true)
+    if(starttime>0 && endtime>0 && day==true && starttime<endtime)
     {
       $('#search-sched').removeAttr('disabled');
     }
@@ -323,25 +297,6 @@
 
 
         var $subjectlist = $('.subject-container');
-
-        function wordInString(s, words){
-          var all = '';
-          var patt;
-
-          keywords = words.split(" ");
-          for(i = 0; i < keywords.length; i++){
-
-            patt = '\\b' + keywords[i] + '\\b';
-            if(i < keywords.length-1) {
-              patt = patt + '|';
-            }
-            
-            all = all + patt;
-           
-          } 
-          return all;
-        }
-
        
         $subjectlist.each(function(){
             var subjectname = $(this).data('name').replace(/\s+/g,' ').toLowerCase();
@@ -354,6 +309,38 @@
         });
     });
   
+   
+    $('#search-sched').click(function(e){
+      e.preventDefault();
+      var day_input = [];
+      $.each($("input[type=checkbox]:checked"), function(){            
+        day_input.push($(this).val());
+      });
+      var start_time = $("#start-time option:selected").val();
+      var end_time = $("#end-time option:selected").val();
+
+      var form_data= {
+        day: day_input,
+        start_time: start_time,
+        end_time: end_time,
+        ajax: '1' 
+      };
+
+      $.ajax({
+        url: "<?php echo site_url('adminPanel/sched_input'); ?>",
+        type: 'POST',
+        data: form_data,
+        success: function(data) {
+          alert(data);
+          if(data) {
+            $('.result-wrap').html(data);
+          }
+          else {
+            $('.result-wrap').html("<center>No results found.</center>");
+          }
+        }
+      });
+    });
 
 
 

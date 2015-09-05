@@ -9,6 +9,7 @@ class Admin_Model extends CI_Model{
 
 	function allSubjects() {
 		$this->db->order_by('name', 'asc');
+		$this->db->group_by('name');
 		$query = $this->db->get('classes');
 		return $query->result_array();
 	}
@@ -25,132 +26,58 @@ class Admin_Model extends CI_Model{
 	function subjectInfo($class_code) {
 		
 		$query = $this->db->get_where('classes', array('class_code' => $class_code));
-		$result =  $query->result_array();
-		foreach ($result as $row) {
-			return $row;
-		}
+		$result =  $query->row_array();
+		return $result;
 	}
 
-	function studentsEnrolled($class_code) {
+	function studentsEnrolled($subject_name) { //$class_code
+		/*
 		$this->db->select('students.name');
 		$this->db->join('students', 'students.student_number = schedule.student_number');
 		$query = $this->db->get_where('schedule', array('class_code' => $class_code));
 
 		return $query->result_array();
+		*/
+		$this->db->select('students.name');
+		$this->db->join('schedule', 'classes.class_code = schedule.class_code');
+		$this->db->join('students', 'students.student_number = schedule.student_number');
+		$this->db->group_by('students.name');
+		$query = $this->db->get_where('classes', array('classes.name' => $subject_name));
+
+		return $query->result_array();
 	}
 
-	function totalEnrolled($class_code) {
+	function totalEnrolled($subject_name) { //$class_code
+		/*
 		$this->db->select('students.name');
 		$this->db->join('students', 'students.student_number = schedule.student_number');
 		$query = $this->db->get_where('schedule', array('class_code' => $class_code));
+		*/
 
+		$this->db->select('students.name');
+		$this->db->join('schedule', 'classes.class_code = schedule.class_code');
+		$this->db->join('students', 'students.student_number = schedule.student_number');
+		$this->db->group_by('students.name');
+		$query = $this->db->get_where('classes', array('classes.name' => $subject_name));
 		return $query->num_rows();
 	}
 
-	function getUserID($buildingName){
-		$this->db->select('userID');
-		$query = $this->db->get_where('users', array('buildingName' => $buildingName));
-		$result = $query->result_array();
-		foreach ($result as $row) {
-			return $row['userID'];
-		}
-	}
+	function availableStudents($data) {
+		$day = $data['day'];
+		$start_time = $data['start_time'];
+		$end_time = $data['end_time'];
 
-	function getSubmeterID($data){
-		$userID = $data['userID'];
-		$submeterName = $data['submeterName'];
-		//echo "<script>alert('$userID')</script>";
-		//echo "<script>alert('$submeterName')</script>";
+				
+		//echo "<script>alert('$endingDate'); </script>";	
 
-		$query = $this->db->get_where('ebillsubmeters', array('submeterName' => $submeterName, 'userID' => $userID));
-		$result = $query->result_array();
-		
-		//echo "<script>alert('before for')</script>";
-		foreach ($result as $row) {			
-			//echo "<script>alert('here')</script>";
-			$id = $row['submeterID'];
-			//echo "<script>alert('$id')</script>";
-			return $row['submeterID'];
-		}
-	}
-
-	function getBuildingNames(){
-		$this->db->order_by('buildingName', 'asc');
-		$this->db->where('username!=', 'admin');
-		$query = $this->db->get('users');
+		$array = array('classes.start_time >=' => $start_time, 'classes.end_time <=' => $end_time);
+		$this->db->where($array);				
+		$this->db->from('classes');		
+		$this->db->order_by('name asc');	
+		$this->db->join('schedule', 'classes.class_code = schedule.class_code');
+		$this->db->join('students', 'students.student_number = schedule.student_number');				
+		$query = $this->db->get();		
 		return $query->result_array();
-	}	
-
-	function getSubmeterNames($userID){
-		$query = $this->db->get_where('ebillsubmeters', array('userID' => $userID));
-		return $query->result_array();
-	}	
-
-	function addBuilding($data){
-		//echo "<script>alert('add Building model')</script>";
-		$newData['buildingName'] = $data['buildingName'];
-		if($this->hasDuplicate('users', $newData, 'buildingName')){
-			//echo "<script>alert('has duplicate')</script>";
-			return false;
-		}
-		else{
-			$this->db->insert('users', $data);
-			//echo "<script>alert('no duplicate')</script>";
-			return true;	
-		}		
-	}
-
-	function editBuilding($data){
-		$this->db->replace('users', $data);
-	}
-
-	function addSubmeter($data){
-		if($this->hasDuplicate('ebillsubmeters', $data, 'submeterName')){
-			return false;
-		}
-		$this->db->insert('ebillsubmeters', $data);
-		return true;
-	}
-
-	function editSubmeter($data){		
-		$userID = $data['userID'];		
-		$oldName = $data['oldName'];
-		$submeterName = $data['submeterName'];
-		
-		//echo "<script>alert('Edit submeter model: userID $userID name: $submeterName')</script>";
-		$this->db->where(array('userID'=> $userID, 'submeterName' => $oldName));	
-		$this->db->update('ebillsubmeters', array('submeterName' => $submeterName));
-		
-	}
-
-	function addEbill($data){
-		//input handling
-		if((!ctype_digit($data['serviceID'])) or (!preg_match("~^\d{4}-\d{2}-\d{2}$~", $data['startDate'])) or (!preg_match("~^\d{4}-\d{2}-\d{2}$~", $data['endDate'])) or (!is_numeric($data['totalKwh'])) or (!is_numeric($data['totalCost'])) or (!is_numeric($data['genCharge'])) or (!is_numeric($data['transCharge'])) or (!is_numeric($data['distCharge']))){
-			return false;
-		}
-		
-		$this->db->insert('ebill', $data);
-		return true;
-	}
-
-	function editEbill($data){		
-		$this->db->replace('ebill', $data);
-	}
-
-	function addWbill($data){
-		//input handling
-		if((!ctype_digit($data['serviceID'])) or (!preg_match("~^\d{4}-\d{2}-\d{2}$~", $data['startDate'])) or (!preg_match("~^\d{4}-\d{2}-\d{2}$~", $data['endDate'])) or (!is_numeric($data['totalCc'])) or (!is_numeric($data['totalCost']))){
-			return false;
-		}
-		
-		$this->db->insert('wbill', $data);
-		return true;
-	}
-
-	function editWbill($data){		
-		//echo "<script>alert('Edit wbill model: $wbillID')</script>";
-		$this->db->replace('wbill', $data);
-		
 	}
 
 

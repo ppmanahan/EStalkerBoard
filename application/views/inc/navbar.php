@@ -11,6 +11,7 @@
 <link href="<?=base_url()?>public/dataTables/media/css/jquery.dataTables_themeroller.css" rel="stylesheet">
 <link rel="stylesheet" href="<?=base_url()?>public/css/dataTables.bootstrap.css" />
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="<?=base_url()?>public/js/jquery-2.1.1.js"></script>
 <script src="<?=base_url()?>public/js/jquery-2.1.1.min.js"></script>
 <script src="<?=base_url()?>public/js/jquery.js"></script>
