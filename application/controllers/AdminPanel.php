@@ -20,35 +20,10 @@ class AdminPanel extends CI_Controller{
 	}
 
 	function lookup($time){
-		$res = null;
-		if($time === '700'){
-			$res = '7:00 am';
-		}
-		else if($time === '830'){
-			$res = '8:30';
-		}
-		else if($time === '1000'){
-			$res = '10:00';
-		}
-		else if($time === '1130'){
-			$res = '11:30';
-		}
-		else if($time === '1300'){
-			$res = '1:00';
-		}
-		else if($time === '1430'){
-			$res = '2:30';
-		}
-		else if($time === '1600'){
-			$res = '4:00';
-		}
-		else if($time === '1730'){
-			$res = '5:30';
-		}
-		else if($time === '1900'){
-			$res = '7:00 pm';
-		}
-		return $res;
+		$res = substr_replace($time, ':', -2, 0);
+		$result = date('h:i a', strtotime($res));
+
+		return $result;
 	}
 
 	function students(){
@@ -123,6 +98,9 @@ class AdminPanel extends CI_Controller{
 		$freeStudents = $this->admin_model->availableStudents($inputdata);
 		$totalAvailable = $this->admin_model->totalAvailable($inputdata);
 		$data['totalAvailable'] = $totalAvailable;
+		$data['start'] = $this->lookup($inputdata['start_time']);
+		$data['end'] = $this->lookup($inputdata['end_time']);
+		$data['day'] = $day;
 
 		if($freeStudents === 'empty') {
 			//do nothing

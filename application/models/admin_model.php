@@ -14,6 +14,9 @@ class Admin_Model extends CI_Model{
 		return $query->result_array();
 	}
 
+
+	/****************STUDENT PAGE***********************/
+
 	function studentInfo($student_number) {
 		
 		$query = $this->db->get_where('students', array('student_number' => $student_number));
@@ -35,12 +38,13 @@ class Admin_Model extends CI_Model{
 		$this->db->select_sum('units');
 		$this->db->join('classes', 'classes.class_code = schedule.class_code');
 		$query = $this->db->get_where('schedule', array('schedule.student_number' => $student_number));
-
 		$result = $query->result_array();
 		
 		return $result[0];
-		
 	}
+
+
+	/****************SUBJECT PAGE***********************/
 
 	function subjectInfo($class_code) {
 		
@@ -74,6 +78,9 @@ class Admin_Model extends CI_Model{
 		return $query->num_rows();
 	}
 
+
+	/****************SEARCH BY SCHEDULE***********************/
+
 	//fucntion to get the set of students without classes
 	function freeStudents($data) {
 		$days = $data['day'];
@@ -93,28 +100,27 @@ class Admin_Model extends CI_Model{
 		$res = $query1->result_array();
 
 		$hasClass = array();
-
 		foreach($res as $row){
-			array_push($hasClass, $row['student_number']);
+			array_push($hasClass, $row['student_number']); //store the student number of mems with classes
 		}
 		
 		//query to get students without class
-		if(empty($hasClass)){
-			return "empty";
+		if(empty($hasClass)){ //if empty, all student are available
+			$this->db->order_by('name', 'asc');
+			$query2 = $this->db->get('students');
 		} else {
 			$this->db->where_not_in('student_number', $hasClass);
 			$this->db->order_by('name asc');	
 			$this->db->group_by('student_number');
 			$query2 = $this->db->get('students');
-
-			return $query2;
 		}
+		return $query2;
 	}
 
 	//to store the query in nested array
 	function availableStudents($data){
 		$query = $this->freeStudents($data);
-		return $query->result_array();
+		return $query->result_array();	
 	}
 
 	//to get the total of available students

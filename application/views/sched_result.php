@@ -1,6 +1,7 @@
 <?php
 
 echo '<hr style="height:1px; color:#999999; background-color:#999999;"><div style="display:inline;"><b>' . $totalAvailable . '</b></div><span><small> people</small></span>';
+echo '<center><small>Students available (' . $day . " " .  $start . ' - ' . $end . ')</small></center>';
 echo '<div class="result-wrap">';
 ?>
 <?php
