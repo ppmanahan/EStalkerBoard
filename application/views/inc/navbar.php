@@ -108,7 +108,7 @@ input[readonly] {
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
         <span class="sr-only">Toggle navigation</span>
       </button>
-      <a href=<?=$main?> class="navbar-brand" href=""> <img src="<?=base_url()?>public/img/eslogo.png"/></a>
+      <a href=<?=$main?> class="navbar-brand" href=""> <img src="<?=base_url()?>public/img/eslogo.png" style="padding-top:2px;"/></a>
   </div><!--navbar-header-->
 </div> <!--container-fluid-->
 </div> <!--navbar-->
