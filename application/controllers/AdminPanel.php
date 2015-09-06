@@ -19,6 +19,38 @@ class AdminPanel extends CI_Controller{
 		$this->load->view('template', $data);
 	}
 
+	function lookup($time){
+		$res = null;
+		if($time === '700'){
+			$res = '7:00 am';
+		}
+		else if($time === '830'){
+			$res = '8:30';
+		}
+		else if($time === '1000'){
+			$res = '10:00';
+		}
+		else if($time === '1130'){
+			$res = '11:30';
+		}
+		else if($time === '1300'){
+			$res = '1:00';
+		}
+		else if($time === '1430'){
+			$res = '2:30';
+		}
+		else if($time === '1600'){
+			$res = '4:00';
+		}
+		else if($time === '1730'){
+			$res = '5:30';
+		}
+		else if($time === '1900'){
+			$res = '7:00 pm';
+		}
+		return $res;
+	}
+
 	function students(){
 
 		$data['title'] = "E-Stalker Board - Student";
@@ -29,9 +61,29 @@ class AdminPanel extends CI_Controller{
 
 		$student_number = $this->uri->segment(3);
 		$data['student'] = $this->admin_model->studentInfo($student_number);
-		
 		$sn = substr_replace($student_number, '-', 4, 0);
 		$data['sn'] = $sn;
+
+		$studentClasses = $this->admin_model->studentSubjects($student_number);
+		$starts = array();
+		$ends = array();
+		foreach($studentClasses as $studentClass){
+			$start_time = $studentClass['start_time'];
+			$start = $this->lookup($start_time);
+			array_push($starts, $start);
+
+			$end_time = $studentClass['end_time'];
+			$end = $this->lookup($end_time);
+			array_push($ends, $end);
+		}
+
+		$totalUnits = $this->admin_model->totalUnits($student_number);
+
+		$data['totalUnits'] = $totalUnits;
+		$data['start'] = $starts;
+		$data['end'] = $ends;
+		$data['studentClasses'] = $studentClasses;
+		
 
 		$this->load->view('student', $data);
 

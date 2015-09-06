@@ -23,6 +23,25 @@ class Admin_Model extends CI_Model{
 		}
 	}
 
+	function studentSubjects($student_number){
+		
+		$this->db->join('classes', 'classes.class_code = schedule.class_code');
+		$query = $this->db->get_where('schedule', array('schedule.student_number' => $student_number));
+
+		return $query->result_array();
+	}
+
+	function totalUnits($student_number){
+		$this->db->select_sum('units');
+		$this->db->join('classes', 'classes.class_code = schedule.class_code');
+		$query = $this->db->get_where('schedule', array('schedule.student_number' => $student_number));
+
+		$result = $query->result_array();
+		
+		return $result[0];
+		
+	}
+
 	function subjectInfo($class_code) {
 		
 		$query = $this->db->get_where('classes', array('class_code' => $class_code));
@@ -32,7 +51,7 @@ class Admin_Model extends CI_Model{
 
 	//funtion to get the students enrolled in a subject
 	function enrolled($subject_name){
-		$this->db->select('students.name');
+		$this->db->select('students.name, students.student_number');
 		$this->db->join('schedule', 'classes.class_code = schedule.class_code');
 		$this->db->join('students', 'students.student_number = schedule.student_number');
 		$this->db->group_by('students.name');
