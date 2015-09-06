@@ -4,7 +4,7 @@
   <div class="main-wrap">
     <div class="page-header">
         <h5><?php echo $student['name'] ?></h5>
-        <p><?php echo $student['student_number'] ?></p>
+        <p><?php echo $sn ?></p>
      </div>
      <small>Schedule</small>
      <table class="table table-bordered table-hover table-condensed">

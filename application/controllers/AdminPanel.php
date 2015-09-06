@@ -29,6 +29,10 @@ class AdminPanel extends CI_Controller{
 
 		$student_number = $this->uri->segment(3);
 		$data['student'] = $this->admin_model->studentInfo($student_number);
+		
+		$sn = substr_replace($student_number, '-', 4, 0);
+		$data['sn'] = $sn;
+
 		$this->load->view('student', $data);
 
 		$this->load->view('inc/footer_view');	
