@@ -7,9 +7,7 @@ class AdminPanel extends CI_Controller{
         $this->load->helper(array('url', 'form', 'date', 'text'));
 		$this->load->library(array('session', 'form_validation'));
         //for navbar names or use sessions
-        $this->load->model('shared_model');
         $this->load->model('admin_model');
-        $this->load->model('users_model');
     }
 
 	function main(){		
@@ -59,21 +57,31 @@ class AdminPanel extends CI_Controller{
 		$days = $this->input->post('day');
 		$day = implode("", $days);
 		
-		$data = array(
+		$inputdata = array(
 			'day' => $day,
-			'start_time' => $this->input->post('start-time'),
-			'end_time' => $this->input->post('end-time')
+			'start_time' => $this->input->post('start_time'),
+			'end_time' => $this->input->post('end_time')
 			);
-		//call model function for this
-		//$free = $this->admin_model->availableStudents($data);
 
-		//load the data in views
-		$data['main_content'] = 'sched_result';
-		
-		if ($this->input->post('ajax')) {
-			$this->load->view($data['main_content']);			
+		//call model function for this
+		$freeStudents = $this->admin_model->availableStudents($inputdata);
+		$totalAvailable = $this->admin_model->totalAvailable($inputdata);
+		$data['totalAvailable'] = $totalAvailable;
+
+		if($freeStudents === 'empty') {
+			//do nothing
+		}
+		else {
+			$data['freeStudents'] = $freeStudents;
+			//load the data in views
+			if ($this->input->post('ajax')) {
+				$this->load->view('sched_result', $data);			
+			}
 		}
 	}
+
+		
+		
 
 }
 

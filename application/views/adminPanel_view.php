@@ -135,10 +135,7 @@
       </div>
     </form>
     <div class="row">
-      <div class="col-xs-12">
-        <hr style="height:1px; color:#999999; background-color:#999999;"><div id="count" class="count" data-value="{{{ $count }}}" style="display:inline;"><b>43</b></div><span><small> people</small></span>
-        <div class="result-wrap" id="result-wrap">
-        </div>
+      <div class="col-xs-12" id="result-wrap">
       </div>
     </div> 
   </div> <!--tab-container-->
@@ -331,13 +328,15 @@
         type: 'POST',
         data: form_data,
         success: function(data) {
-          alert(data);
           if(data) {
-            $('.result-wrap').html(data);
+            $('#result-wrap').html(data);
           }
-          else {
-            $('.result-wrap').html("<center>No results found.</center>");
+          else{
+            $('#result-wrap').html("<center>No results found.</center>");
           }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          alert(errorThrown);
         }
       });
     });

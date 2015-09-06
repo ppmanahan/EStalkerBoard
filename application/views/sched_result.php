@@ -1,19 +1,18 @@
-<div class>
-  <span style="display:inline-block"><small>Jolinarose R. Gaspar</small></span> 
-  <span style="float: right;"><small>TTh 1 - 2:30</small></span>
-</div>
-<div><small>09276824582</small></div>
-<hr>
+<?php
 
-<div class>
-  <span style="display:inline-block"><small>Patricia P. Manahan</small></span> 
-  <span style="float: right;"><small>WF 2:30 - 4</small></span>
-</div>
-<div><small>09276824582</small></div>
-<hr>
-<div class>
-  <span style="display:inline-block"><small>Taylor Swift</small></span> 
-  <span style="float: right;"><small>TTh 1 - 2:30</small></span>
-</div>
-<div><small>09276824582</small></div>
-<hr>
+echo '<hr style="height:1px; color:#999999; background-color:#999999;"><div style="display:inline;"><b>' . $totalAvailable . '</b></div><span><small> people</small></span>';
+echo '<div class="result-wrap">';
+?>
+<?php
+	foreach ($freeStudents as $freeStudent):       
+	echo '<div class>';
+	  echo '<a href="' . site_url('adminPanel/students/' . $freeStudent['student_number']) . '">' . '<span style="display:inline-block"><small>' . $freeStudent['name'] . '</small></span></a>';
+	  echo '<span style="float: right;"><small>' . $freeStudent['contact_number'] . '</small></span>';
+	echo '</div>';
+	echo '<hr>';
+	endforeach 
+?>
+<?php
+echo '</div>';
+?>
+

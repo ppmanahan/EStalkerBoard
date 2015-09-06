@@ -30,138 +30,79 @@ class Admin_Model extends CI_Model{
 		return $result;
 	}
 
-	function studentsEnrolled($subject_name) { //$class_code
-		/*
-		$this->db->select('students.name');
-		$this->db->join('students', 'students.student_number = schedule.student_number');
-		$query = $this->db->get_where('schedule', array('class_code' => $class_code));
-
-		return $query->result_array();
-		*/
+	//funtion to get the students enrolled in a subject
+	function enrolled($subject_name){
 		$this->db->select('students.name');
 		$this->db->join('schedule', 'classes.class_code = schedule.class_code');
 		$this->db->join('students', 'students.student_number = schedule.student_number');
 		$this->db->group_by('students.name');
 		$query = $this->db->get_where('classes', array('classes.name' => $subject_name));
 
+		return $query;
+	}
+
+	//to store the query in nested array
+	function studentsEnrolled($subject_name) {
+		
+		$query = $this->enrolled($subject_name);
 		return $query->result_array();
 	}
 
-	function totalEnrolled($subject_name) { //$class_code
-		/*
-		$this->db->select('students.name');
-		$this->db->join('students', 'students.student_number = schedule.student_number');
-		$query = $this->db->get_where('schedule', array('class_code' => $class_code));
-		*/
+	//to get the total of students taking that subject
+	function totalEnrolled($subject_name) {
 
-		$this->db->select('students.name');
-		$this->db->join('schedule', 'classes.class_code = schedule.class_code');
-		$this->db->join('students', 'students.student_number = schedule.student_number');
-		$this->db->group_by('students.name');
-		$query = $this->db->get_where('classes', array('classes.name' => $subject_name));
+		$query = $this->enrolled($subject_name);
 		return $query->num_rows();
 	}
 
-	function availableStudents($data) {
-		$day = $data['day'];
+	//fucntion to get the set of students without classes
+	function freeStudents($data) {
+		$days = $data['day'];
 		$start_time = $data['start_time'];
 		$end_time = $data['end_time'];
 
-				
-		//echo "<script>alert('$endingDate'); </script>";	
-
+		//query to get students with class during the time interval
 		$array = array('classes.start_time >=' => $start_time, 'classes.end_time <=' => $end_time);
-		$this->db->where($array);				
+		$this->db->where($array);
+		$this->db->like('classes.day', $days);		
 		$this->db->from('classes');		
-		$this->db->order_by('name asc');	
+		$this->db->order_by('students.name asc');	
 		$this->db->join('schedule', 'classes.class_code = schedule.class_code');
 		$this->db->join('students', 'students.student_number = schedule.student_number');				
-		$query = $this->db->get();		
-		return $query->result_array();
-	}
+		$query1 = $this->db->get();
 
+		$res = $query1->result_array();
 
-	function getEStatistics($data){
-		$startingDate = $data['start_date'];
-		$endingDate = $data['end_date'];
-			
-		//echo "<script>alert('$startingDate'); </script>";		
-		//echo "<script>alert('$endingDate'); </script>";	
+		$hasClass = array();
 
-		$array = array('ebill.startDate >=' => $startingDate, 'ebill.endDate <=' => $endingDate);
-		$this->db->where($array);				
-		$this->db->from('ebill');		
-		$this->db->order_by('totalKwh DESC');	
-		$this->db->join('ebillsubmeters', 'ebill.submeterID = ebillsubmeters.submeterID');
-		$this->db->join('users', 'ebill.userID = users.userID');					
-		$query = $this->db->get();		
-		return $query->result_array();	
-	}
-
-	function getWStatistics($data){
-		$startingDate = $data['start_date'];
-		$endingDate = $data['end_date'];
-
-		$array = array('wbill.startDate >=' => $startingDate, 'wbill.endDate <=' => $endingDate);
-		$this->db->where($array);				
-		$this->db->from('wbill');
-		$this->db->order_by('totalCc DESC');	
-		$this->db->join('users', 'wbill.userID = users.userID');			
-		$query = $this->db->get();
-		return $query->result_array();	
-	}
-
-	function getReportInfo($data){
-		$startDate1 = $data['startDate1'];
-		$startDate2 = $data['startDate2'];
-		$userID = $data['userID'];
-		$tableName = $data['table'];
-
-		if($tableName == 'ebill')
-			$this->db->where(array('ebill.userID' => $userID, 'startDate >=' => $startDate1, 'startDate <' => $startDate2));
-		else
-			$this->db->where(array('userID' => $userID, 'startDate >=' => $startDate1, 'startDate <' => $startDate2));	
+		foreach($res as $row){
+			array_push($hasClass, $row['student_number']);
+		}
 		
-		if($tableName == "ebill"){
-			//echo "<script>alert('ebill report')</script>";
-			$this->db->join('ebillsubmeters', 'ebillsubmeters.submeterID = ebill.submeterID');
+		//query to get students without class
+		if(empty($hasClass)){
+			return "empty";
+		} else {
+			$this->db->where_not_in('student_number', $hasClass);
+			$this->db->order_by('name asc');	
+			$this->db->group_by('student_number');
+			$query2 = $this->db->get('students');
+
+			return $query2;
 		}
-
-		$query = $this->db->get($tableName);
-
-		$count = $query->num_rows();
-
-		//echo "<script>alert('count: $count')</script>";
-
-		if($count >= 1){
-			//echo "<script>alert('has content')</script>";
-			$result = $query->result_array();
-
-			return $result;
-			
-		}
-		else{
-			//echo "<script>alert('is null')</script>";	
-			return null;
-		}
-
 	}
 
-	function getAllEbill(){
-		$this->db->from('ebill');
-		$this->db->join('users', 'ebill.userID = users.userID');
-		$this->db->join('ebillsubmeters', 'ebill.submeterID = ebillsubmeters.submeterID');
-		$query = $this->db->get();
+	//to store the query in nested array
+	function availableStudents($data){
+		$query = $this->freeStudents($data);
 		return $query->result_array();
 	}
 
-	function getAllWbill(){
-		$this->db->from('wbill');
-		$this->db->join('users', 'wbill.userID = users.userID');
-		$query = $this->db->get();
-		return $query->result_array();
+	//to get the total of available students
+	function totalAvailable($data){
+		$query = $this->freeStudents($data);
+		return $query->num_rows();
 	}
-
 
 }
 ?>
