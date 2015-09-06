@@ -332,7 +332,7 @@
             $('#result-wrap').html(data);
           }
           else{
-            $('#result-wrap').html("<center>No results found.</center>");
+            $('#result-wrap').html("<hr style='height:1px; color:#999999; background-color:#999999;'><div style='display:inline;'><b>0</b></div><span><small> people</small></span><div class='result-wrap'><center>No results found.</center></div>");
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {

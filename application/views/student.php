@@ -7,6 +7,7 @@
         <p><?php echo $sn ?></p>
     </div>
     <small>Schedule</small>
+    <img src="<?=base_url()?>public/img/icons/png/student.png" height="100" width="100" class="displayed" />
     <div class="result-wrap">
       <small>Total units: <b><?php echo $totalUnits['units'] ?></b></small>
       <hr style="height:1px; color:#999999; background-color:#999999;">

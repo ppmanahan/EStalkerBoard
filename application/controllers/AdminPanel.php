@@ -19,6 +19,7 @@ class AdminPanel extends CI_Controller{
 		$this->load->view('template', $data);
 	}
 
+	//function to format time
 	function lookup($time){
 		$res = substr_replace($time, ':', -2, 0);
 		$result = date('h:i a', strtotime($res));
@@ -34,15 +35,15 @@ class AdminPanel extends CI_Controller{
 		$data['main'] = site_url('adminPanel/main');
 		$this->load->view('inc/navbar', $data);
 
-		$student_number = $this->uri->segment(3);
+		$student_number = $this->uri->segment(3); //to get the student number form url
 		$data['student'] = $this->admin_model->studentInfo($student_number);
-		$sn = substr_replace($student_number, '-', 4, 0);
+		$sn = substr_replace($student_number, '-', 4, 0); //formal student number
 		$data['sn'] = $sn;
 
 		$studentClasses = $this->admin_model->studentSubjects($student_number);
 		$starts = array();
 		$ends = array();
-		foreach($studentClasses as $studentClass){
+		foreach($studentClasses as $studentClass){ //to format time
 			$start_time = $studentClass['start_time'];
 			$start = $this->lookup($start_time);
 			array_push($starts, $start);
