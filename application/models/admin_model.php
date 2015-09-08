@@ -103,6 +103,19 @@ class Admin_Model extends CI_Model{
 		foreach($res as $row){
 			array_push($hasClass, $row['student_number']); //store the student number of mems with classes
 		}
+
+		//get the students with no enlisted class/mga di nagpasa ng form 5!!!
+		$this->db->select('students.student_number as student_number');
+		$this->db->where('schedule.class_code', NULL);	
+		$this->db->from('students');		
+		$this->db->order_by('students.name asc');	
+		$this->db->join('schedule', 'students.student_number = schedule.student_number', 'left');			
+		$query3 = $this->db->get();
+
+		$empty = $query3->result_array();
+		foreach($empty as $emp){
+			array_push($hasClass, $emp['student_number']);
+		}
 		
 		//query to get students without class
 		if(empty($hasClass)){ //if empty, all student are available

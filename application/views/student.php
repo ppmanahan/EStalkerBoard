@@ -36,3 +36,10 @@
   </div> <!--row--> 
 <div class = "push"></div>
 </div> <!-- container -->
+
+<script type="text/javascript">
+function go_bck(){
+  window.history.back();
+}
+
+</script>
