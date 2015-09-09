@@ -81,27 +81,97 @@ class Admin_Model extends CI_Model{
 
 	/****************SEARCH BY SCHEDULE***********************/
 
-	//fucntion to get the set of students without classes
+	//function to get the set of students without classes
 	function freeStudents($data) {
 		$days = $data['day'];
 		$start_time = $data['start_time'];
 		$end_time = $data['end_time'];
 
-		//query to get students with class during the time interval
-		$array = array('classes.start_time >=' => $start_time, 'classes.end_time <=' => $end_time);
-		$this->db->where($array);
-		$this->db->like('classes.day', $days);		
-		$this->db->from('classes');		
-		$this->db->order_by('students.name asc');	
-		$this->db->join('schedule', 'classes.class_code = schedule.class_code');
-		$this->db->join('students', 'students.student_number = schedule.student_number');				
-		$query1 = $this->db->get();
-
-		$res = $query1->result_array();
-
 		$hasClass = array();
-		foreach($res as $row){
-			array_push($hasClass, $row['student_number']); //store the student number of mems with classes
+		$duplicates = array();
+
+		//query to get students with class during the time interval
+		foreach($days as $day){ //iterate all the checked days
+			if($day === 'M'){
+				$array = array('classes.start_time >=' => $start_time, 'classes.end_time <=' => $end_time);
+				$this->db->where($array);
+				$this->db->like('classes.day', $day);		
+				$this->db->from('classes');		
+				$this->db->order_by('students.name asc');	
+				$this->db->join('schedule', 'classes.class_code = schedule.class_code');
+				$this->db->join('students', 'students.student_number = schedule.student_number');				
+				$query1 = $this->db->get();
+
+				$res = $query1->result_array();
+			}else if($day === 'T'){
+				$array = array('classes.start_time >=' => $start_time, 'classes.end_time <=' => $end_time);
+				$this->db->where($array);
+				$this->db->like('classes.day', $day);		
+				$this->db->from('classes');		
+				$this->db->order_by('students.name asc');	
+				$this->db->join('schedule', 'classes.class_code = schedule.class_code');
+				$this->db->join('students', 'students.student_number = schedule.student_number');				
+				$query1 = $this->db->get();
+
+				$res = $query1->result_array();
+			}else if($day === 'W'){
+				$array = array('classes.start_time >=' => $start_time, 'classes.end_time <=' => $end_time);
+				$this->db->where($array);
+				$this->db->like('classes.day', $day);		
+				$this->db->from('classes');		
+				$this->db->order_by('students.name asc');	
+				$this->db->join('schedule', 'classes.class_code = schedule.class_code');
+				$this->db->join('students', 'students.student_number = schedule.student_number');				
+				$query1 = $this->db->get();
+
+				$res = $query1->result_array();
+			}else if($day === 'Th'){
+				$array = array('classes.start_time >=' => $start_time, 'classes.end_time <=' => $end_time);
+				$this->db->where($array);
+				$this->db->like('classes.day', $day);		
+				$this->db->from('classes');		
+				$this->db->order_by('students.name asc');	
+				$this->db->join('schedule', 'classes.class_code = schedule.class_code');
+				$this->db->join('students', 'students.student_number = schedule.student_number');				
+				$query1 = $this->db->get();
+
+				$res = $query1->result_array();
+			}else if($day === 'F'){
+				$array = array('classes.start_time >=' => $start_time, 'classes.end_time <=' => $end_time);
+				$this->db->where($array);
+				$this->db->like('classes.day', $day);		
+				$this->db->from('classes');		
+				$this->db->order_by('students.name asc');	
+				$this->db->join('schedule', 'classes.class_code = schedule.class_code');
+				$this->db->join('students', 'students.student_number = schedule.student_number');				
+				$query1 = $this->db->get();
+
+				$res = $query1->result_array();
+			}else if($day === 'S'){
+				$array = array('classes.start_time >=' => $start_time, 'classes.end_time <=' => $end_time);
+				$this->db->where($array);
+				$this->db->like('classes.day', $day);		
+				$this->db->from('classes');		
+				$this->db->order_by('students.name asc');	
+				$this->db->join('schedule', 'classes.class_code = schedule.class_code');
+				$this->db->join('students', 'students.student_number = schedule.student_number');				
+				$query1 = $this->db->get();
+
+				$res = $query1->result_array();
+			}
+			
+			//store the student number of mems with classes
+			foreach($res as $row){
+				array_push($duplicates, $row['student_number']); 
+			}
+		}
+
+		//get the intersection of the set of students
+		$countStudents = array_count_values($duplicates); //to count the occurence of student.
+		foreach($countStudents as $key=>$countStudent){
+			if($countStudent > 1){						//if more than 1, then store it
+				array_push($hasClass, $key);
+			}
 		}
 
 		//get the students with no enlisted class/mga di nagpasa ng form 5!!!

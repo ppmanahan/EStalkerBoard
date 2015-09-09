@@ -90,7 +90,7 @@ class AdminPanel extends CI_Controller{
 		$day = implode("", $days);
 		
 		$inputdata = array(
-			'day' => $day,
+			'day' => $this->input->post('day'),
 			'start_time' => $this->input->post('start_time'),
 			'end_time' => $this->input->post('end_time')
 			);
