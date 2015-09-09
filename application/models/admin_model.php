@@ -167,13 +167,20 @@ class Admin_Model extends CI_Model{
 		}
 
 		//get the intersection of the set of students
-		$countStudents = array_count_values($duplicates); //to count the occurence of student.
-		foreach($countStudents as $key=>$countStudent){
-			if($countStudent > 1){						//if more than 1, then store it
-				array_push($hasClass, $key);
+		if(sizeof($days) > 1){ //if more than 1 days are checked
+			$countStudents = array_count_values($duplicates); //to count the occurence of student.
+			foreach($countStudents as $key=>$countStudent){
+				if($countStudent > 1){						//if more than 1, then store it
+					array_push($hasClass, $key);
+				}
 			}
+		} else { //if only 1, directly save it in hasClass
+			foreach($duplicates as $duplicate){
+				array_push($hasClass, $duplicate);
+			}
+			
 		}
-
+		
 		//get the students with no enlisted class/mga di nagpasa ng form 5!!!
 		$this->db->select('students.student_number as student_number');
 		$this->db->where('schedule.class_code', NULL);	
