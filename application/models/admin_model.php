@@ -93,8 +93,7 @@ class Admin_Model extends CI_Model{
 		//query to get students with class during the time interval
 		foreach($days as $day){ //iterate all the checked days
 			if($day === 'M'){
-				$array = array('classes.start_time >=' => $start_time, 'classes.end_time <=' => $end_time);
-				$this->db->where($array);
+				$this->db->where("((classes.start_time >= $start_time AND classes.end_time <= $end_time)  OR (classes.end_time > $start_time AND classes.end_time < $end_time) OR (classes.start_time > $start_time AND classes.start_time < $end_time))");
 				$this->db->like('classes.day', $day);		
 				$this->db->from('classes');		
 				$this->db->order_by('students.name asc');	
@@ -104,8 +103,7 @@ class Admin_Model extends CI_Model{
 
 				$res = $query1->result_array();
 			}else if($day === 'T'){
-				$array = array('classes.start_time >=' => $start_time, 'classes.end_time <=' => $end_time);
-				$this->db->where($array);
+				$this->db->where("((classes.start_time >= $start_time AND classes.end_time <= $end_time)  OR (classes.end_time > $start_time AND classes.end_time < $end_time) OR (classes.start_time > $start_time AND classes.start_time < $end_time))");
 				$this->db->like('classes.day', $day);		
 				$this->db->from('classes');		
 				$this->db->order_by('students.name asc');	
@@ -114,9 +112,9 @@ class Admin_Model extends CI_Model{
 				$query1 = $this->db->get();
 
 				$res = $query1->result_array();
+				
 			}else if($day === 'W'){
-				$array = array('classes.start_time >=' => $start_time, 'classes.end_time <=' => $end_time);
-				$this->db->where($array);
+				$this->db->where("((classes.start_time >= $start_time AND classes.end_time <= $end_time)  OR (classes.end_time > $start_time AND classes.end_time < $end_time) OR (classes.start_time > $start_time AND classes.start_time < $end_time))");
 				$this->db->like('classes.day', $day);		
 				$this->db->from('classes');		
 				$this->db->order_by('students.name asc');	
@@ -126,8 +124,7 @@ class Admin_Model extends CI_Model{
 
 				$res = $query1->result_array();
 			}else if($day === 'Th'){
-				$array = array('classes.start_time >=' => $start_time, 'classes.end_time <=' => $end_time);
-				$this->db->where($array);
+				$this->db->where("((classes.start_time >= $start_time AND classes.end_time <= $end_time)  OR (classes.end_time > $start_time AND classes.end_time < $end_time) OR (classes.start_time > $start_time AND classes.start_time < $end_time))");
 				$this->db->like('classes.day', $day);		
 				$this->db->from('classes');		
 				$this->db->order_by('students.name asc');	
@@ -137,8 +134,7 @@ class Admin_Model extends CI_Model{
 
 				$res = $query1->result_array();
 			}else if($day === 'F'){
-				$array = array('classes.start_time >=' => $start_time, 'classes.end_time <=' => $end_time);
-				$this->db->where($array);
+				$this->db->where("((classes.start_time >= $start_time AND classes.end_time <= $end_time)  OR (classes.end_time > $start_time AND classes.end_time < $end_time) OR (classes.start_time > $start_time AND classes.start_time < $end_time))");
 				$this->db->like('classes.day', $day);		
 				$this->db->from('classes');		
 				$this->db->order_by('students.name asc');	
@@ -148,8 +144,7 @@ class Admin_Model extends CI_Model{
 
 				$res = $query1->result_array();
 			}else if($day === 'S'){
-				$array = array('classes.start_time >=' => $start_time, 'classes.end_time <=' => $end_time);
-				$this->db->where($array);
+				$this->db->where("((classes.start_time >= $start_time AND classes.end_time <= $end_time)  OR (classes.end_time > $start_time AND classes.end_time < $end_time) OR (classes.start_time > $start_time AND classes.start_time < $end_time))");
 				$this->db->like('classes.day', $day);		
 				$this->db->from('classes');		
 				$this->db->order_by('students.name asc');	
@@ -174,7 +169,7 @@ class Admin_Model extends CI_Model{
 					array_push($hasClass, $key);
 				}
 			}
-		} else { //if only 1, directly save it in hasClass
+		} else { //if only 1, directly save it in hasClass directly
 			foreach($duplicates as $duplicate){
 				array_push($hasClass, $duplicate);
 			}
